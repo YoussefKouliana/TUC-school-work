@@ -16,9 +16,45 @@ namespace TodoAppWPF2
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private TodoList _todoList;
         public MainWindow()
         {
             InitializeComponent();
+            _todoList = new TodoList();
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(TasksListBox.SelectedIndex >= 0)
+            {
+                _todoList.RemoveTask(TasksListBox.SelectedIndex);
+                updateTaskList();
+            }
+        }
+
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            string task = TaskTextBox.Text;
+            if (!string.IsNullOrEmpty(task))
+            {
+                _todoList.AddTask(task);
+                updateTaskList();
+                TaskTextBox.Clear();
+            }
+        }
+
+        /// <summary>
+        /// updating the list with todo items.
+        /// </summary>
+        private void updateTaskList()
+        {
+            TasksListBox.Items.Clear();
+            foreach (var task in _todoList.GetAllTasks())
+            {
+                TasksListBox.Items.Add(task);
+            }
         }
     }
 }
