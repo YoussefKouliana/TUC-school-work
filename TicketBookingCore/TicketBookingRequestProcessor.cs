@@ -9,8 +9,12 @@ namespace TicketBookingCore
 
         public TicketBookingResponse Book(TicketBookingRequest request)
         {
-            //refractor för att returnera en ny ticketBookingResponse
-            return new TicketBookingResponse
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+                //refractor för att returnera en ny ticketBookingResponse
+                return new TicketBookingResponse
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
