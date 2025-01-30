@@ -1,16 +1,24 @@
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Moq;
 using System.ComponentModel.DataAnnotations;
 
 namespace TicketBookingCore.Tests
 {
-    public class TicketBookingRequestProcessortests
+    public class TicketBookingRequestProcessorTests
     {
-
+        private readonly TicketBookingRequest _request;
         private readonly Mock<ITicketBookingRepository> _ticketBookingRepositoryMock;
         private readonly TicketBookingRequestProcessor _processor;
-        public TicketBookingRequestProcessortests()
+        public TicketBookingRequestProcessorTests()
         {
-          _ticketBookingRepositoryMock = new Mock<ITicketBookingRepository>();
+            _request = new TicketBookingRequest
+            {
+                FirstName = "Youssef",
+                LastName = "Kouliana",
+                Email = "yosep.koliana@gmail.com"
+            };
+
+            _ticketBookingRepositoryMock = new Mock<ITicketBookingRepository>();
           _processor = new TicketBookingRequestProcessor(_ticketBookingRepositoryMock.Object);
 
         }
@@ -25,13 +33,15 @@ namespace TicketBookingCore.Tests
             {
                 FirstName = "Youssef",
                 LastName = "Kouliana",
-                Email = "yosep.koliana@gmail.com",
+                Email = "yosep.koliana@gmail.com"
             };
 
             //Act
             TicketBookingResponse response = _processor.Book(request);
 
             //Assert
+           
+
             Assert.NotNull(response);
             Assert.Equal(request.FirstName, response.FirstName);
             Assert.Equal(request.LastName, response.LastName);
@@ -44,9 +54,9 @@ namespace TicketBookingCore.Tests
             //Arrange
            // var processor = new TicketBookingRequestProcessor();
             //Act
-            var Exception = Assert.Throws<ArgumentNullException>(() => _processor.Book(null));
+            var exception = Assert.Throws<ArgumentNullException>(() => _processor.Book(null));
             //Assert
-            Assert.Equal("request", Exception.ParamName);
+            Assert.Equal("request", exception.ParamName);
         }
 
         [Fact]
@@ -63,20 +73,18 @@ namespace TicketBookingCore.Tests
                 savedTicketBooking = ticketBooking;
             });
 
-            var request = new TicketBookingRequest
-            {
-                FirstName = "Joe",
-                LastName = "Geliana",
-                Email = "Joseph@gmail.com"
-            };
+           
             //Act
-            TicketBookingResponse response = _processor.Book(request);
+            _processor.Book(_request);
 
             //Assert
+            /// Verify that the Save method was called once
+            _ticketBookingRepositoryMock.Verify(x => x.Save(It.IsAny<TicketBooking>()),
+           Times.Once);
             Assert.NotNull(savedTicketBooking);
-            Assert.Equal(request.FirstName, savedTicketBooking.FirstName);
-            Assert.Equal(request.LastName, savedTicketBooking.LastName);
-            Assert.Equal(request.Email, savedTicketBooking.Email);
+            Assert.Equal(_request.FirstName, savedTicketBooking.FirstName);
+            Assert.Equal(_request.LastName, savedTicketBooking.LastName);
+            Assert.Equal(_request.Email, savedTicketBooking.Email);
         }
     }
 }
