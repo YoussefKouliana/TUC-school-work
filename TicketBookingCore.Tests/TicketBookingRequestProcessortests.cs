@@ -1,3 +1,4 @@
+using Moq;
 using System.ComponentModel.DataAnnotations;
 
 namespace TicketBookingCore.Tests
@@ -5,10 +6,13 @@ namespace TicketBookingCore.Tests
     public class TicketBookingRequestProcessortests
     {
 
+        private readonly Mock<ITicketBookingRepository> _ticketBookingRepositoryMock;
         private readonly TicketBookingRequestProcessor _processor;
         public TicketBookingRequestProcessortests()
         {
-            _processor = new TicketBookingRequestProcessor();
+          _ticketBookingRepositoryMock = new Mock<ITicketBookingRepository>();
+ _processor = new TicketBookingRequestProcessor(_ticketBookingRepositoryMock.Object);
+
         }
         [Fact]
         public void ShouldReturnTicketBookingResultWithRequestValues()
@@ -50,6 +54,15 @@ namespace TicketBookingCore.Tests
         public void ShouldSaveToDataBase()
         {
             //Arrange
+            TicketBooking savedTicketBooking = null;
+
+            // Setup the Save method to capture the saved ticket booking
+            _ticketBookingRepositoryMock.Setup(x => x.Save(It.IsAny<TicketBooking>()))
+            .Callback<TicketBooking>((ticketBooking) =>
+            {
+                savedTicketBooking = ticketBooking;
+            });
+
             var request = new TicketBookingRequest
             {
                 FirstName = "Joe",
@@ -60,6 +73,10 @@ namespace TicketBookingCore.Tests
             TicketBookingResponse response = _processor.Book(request);
 
             //Assert
+            Assert.NotNull(savedTicketBooking);
+            Assert.Equal(request.FirstName, savedTicketBooking.FirstName);
+            Assert.Equal(request.LastName, savedTicketBooking.LastName);
+            Assert.Equal(request.Email, savedTicketBooking.Email);
         }
     }
 }
