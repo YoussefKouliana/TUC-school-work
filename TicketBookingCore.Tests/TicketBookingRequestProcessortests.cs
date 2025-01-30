@@ -11,14 +11,14 @@ namespace TicketBookingCore.Tests
         public TicketBookingRequestProcessortests()
         {
           _ticketBookingRepositoryMock = new Mock<ITicketBookingRepository>();
- _processor = new TicketBookingRequestProcessor(_ticketBookingRepositoryMock.Object);
+          _processor = new TicketBookingRequestProcessor(_ticketBookingRepositoryMock.Object);
 
         }
         [Fact]
         public void ShouldReturnTicketBookingResultWithRequestValues()
         {
             //Arrange
-            var processor = new TicketBookingRequestProcessor();
+            //var processor = new TicketBookingRequestProcessor();
 
 
             var request = new TicketBookingRequest
@@ -42,7 +42,7 @@ namespace TicketBookingCore.Tests
         public void ShouldThrowExceptionIfRequestIsNull()
         {
             //Arrange
-            var processor = new TicketBookingRequestProcessor();
+           // var processor = new TicketBookingRequestProcessor();
             //Act
             var Exception = Assert.Throws<ArgumentNullException>(() => _processor.Book(null));
             //Assert

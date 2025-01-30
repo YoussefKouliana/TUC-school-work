@@ -6,9 +6,7 @@ namespace TicketBookingCore
 
         private readonly ITicketBookingRepository _iTicket;
 
-        public TicketBookingRequestProcessor()
-        {
-        }
+      
 
         public TicketBookingRequestProcessor(ITicketBookingRepository ticketBookingRepository)
         {
@@ -30,6 +28,8 @@ namespace TicketBookingCore
                 
             }
             );
+
+
             //refractor för att returnera en ny TicketBookingResponse
             return new TicketBookingResponse
             {
