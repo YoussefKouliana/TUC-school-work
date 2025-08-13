@@ -21,10 +21,11 @@ javascript/
   lab02 Dom manipulation
   lab03 Memomry game
   ...
-WPF/
+C#/
   lab01/
   lab02 C#, debuggning och enklare testning
   Library-manager "A library system where users can borrow and return books, and admins can add or remove books."
+  TDD "Performing test-driven development (TDD) by writing tests before the code to verify and validate it."
 aspnetcore/
   mvc-lab01/
   api-lab01/
