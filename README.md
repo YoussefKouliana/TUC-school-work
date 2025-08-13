@@ -23,7 +23,7 @@ javascript/
   ...
 WPF/
   lab01/
-  lab02/
+  lab02 C#, debuggning och enklare testning
   Library-manager "A library system where users can borrow and return books, and admins can add or remove books."
 aspnetcore/
   mvc-lab01/
